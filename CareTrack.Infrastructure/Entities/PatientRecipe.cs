@@ -8,8 +8,7 @@ namespace CareTrack.Infrastructure.Entities;
 public class PatientRecipe
 {
     public int RecipeId { get; set; }
-    public List<Recipe> Recipes { get; set; } = [];
-
     public int PatientId { get; set; }
-    public Patient Patient { get; set; } = new();
+    public virtual Recipe? Recipe { get; set; }
+    public virtual Patient? Patient { get; set; }
 }

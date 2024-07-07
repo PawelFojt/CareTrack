@@ -26,13 +26,10 @@ public class Startup(IConfiguration configuration)
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
-        services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("CareTrackDb")));
-
         services
             .AddApplication()
             .AddPresentation()
-            .AddInfractructure();
+            .AddInfractructure(configuration);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment host)
@@ -50,5 +47,9 @@ public class Startup(IConfiguration configuration)
         app.UseRouting();
 
         app.UseCors();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
     }
 }

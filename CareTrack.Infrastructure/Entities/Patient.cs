@@ -9,5 +9,5 @@ public class Patient
     public string PhoneNumber { get; set; } = string.Empty;
     public DateTime Admission { get; set; }
     public DateTime Discharge { get; set; }
-    public List<PatientRecipe>? PatientRecipes { get; set; }
+    public virtual ICollection<PatientRecipe>? PatientRecipes { get; set; }
 }

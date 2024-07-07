@@ -1,5 +1,7 @@
-﻿namespace CareTrack.Infrastructure.Entities;
-public class Medicine
+﻿using CareTrack.Domain.Models;
+
+namespace CareTrack.Infrastructure.Entities;
+public class Medicine : IMedicine
 {
     public int Id { get; set; }
     public string? Name { get; set; }
