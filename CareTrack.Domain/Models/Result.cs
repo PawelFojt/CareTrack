@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace CareTrack.Domain.Models;
 
 
@@ -5,6 +7,7 @@ public class Result<TValue>
 {
     public TValue? Value { get; set; }
     public bool IsError { get; set; }
+    public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
     public string Message { get; set; } = string.Empty;
 
     public Result()
@@ -15,12 +18,13 @@ public class Result<TValue>
         Value = result;
     }
 
-    public static Result<TValue> Error(string message)
+    public static Result<TValue> Error(string message, HttpStatusCode statusCode)
     {
         return new Result<TValue>()
         {
             IsError = true,
-            Message = message
+            Message = message,
+            StatusCode = statusCode
         };
     }
 

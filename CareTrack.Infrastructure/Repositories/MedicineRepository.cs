@@ -1,3 +1,4 @@
+using System.Net;
 using CareTrack.Domain.Models;
 using CareTrack.Domain.Repositories;
 using CareTrack.Infrastructure.presistance;
@@ -38,7 +39,7 @@ public class MedicineRepository : IMedicineRepository
     {
         var medicineToUpdate = await _context.Medicines.FindAsync(medicine.Id);
 
-        if (medicineToUpdate == null) return Result<IMedicine>.Error("Brak leku w bazie danych");
+        if (medicineToUpdate == null) return Result<IMedicine>.Error("Brak leku w bazie danych", HttpStatusCode.NotFound);
 
         medicineToUpdate.Name = medicine.Name;
         medicineToUpdate.Quantity = medicine.Quantity;
@@ -56,7 +57,7 @@ public class MedicineRepository : IMedicineRepository
     {
         var medicineToDelete = await _context.Medicines.FindAsync(id);
 
-        if (medicineToDelete == null) return Result<IMedicine>.Error("Brak leku w bazie danych");
+        if (medicineToDelete == null) return Result<IMedicine>.Error("Brak leku w bazie danych", HttpStatusCode.NotFound);
 
         _context.Medicines.Remove(medicineToDelete);
         await _context.SaveChangesAsync();

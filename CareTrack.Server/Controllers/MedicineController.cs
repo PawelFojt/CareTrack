@@ -1,5 +1,6 @@
 using CareTrack.Domain.Models;
 using CareTrack.Domain.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Medicine = CareTrack.Infrastructure.Entities.Medicine;
 
@@ -7,35 +8,32 @@ namespace CareTrack.Server.Controllers;
 
 [ApiController]
 [Route("Medicine")]
-public class MedicineController : Controller
+public class MedicineController(IMediator mediator, IMedicineRepository medicineRepository) : CommonController(mediator)
 {
-    private readonly IMedicineRepository _medicineRepository;
-
-    public MedicineController(IMedicineRepository medicineRepository)
-    {
-        _medicineRepository = medicineRepository;
-    }
     [HttpGet]
-    public async Task<ActionResult<List<IMedicine>>> GetList()
+    public async Task<IActionResult> GetList()
     {
-        return Ok(await _medicineRepository.GetList());
+        return ConvertResult(await medicineRepository.GetList());
     }
 
-    [HttpPost("Add")]
-    public async Task<ActionResult<IMedicine>> Add([FromBody]Medicine medicine)
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody]Medicine? medicine)
     {
-        return Ok(await _medicineRepository.Add(medicine));
+        if (medicine is null) return WrongInputArgument();
+        return ConvertResult(await medicineRepository.Add(medicine));
     }
 
     [HttpPut]
-    public async Task<ActionResult<IMedicine>> Update([FromBody]Medicine medicine)
+    public async Task<IActionResult> Update([FromBody]Medicine? medicine)
     {
-        return Ok(await _medicineRepository.Update(medicine));
+        if (medicine is null) return WrongInputArgument();
+        return ConvertResult(await medicineRepository.Update(medicine));
     }
 
     [HttpDelete]
-    public async Task<ActionResult<IMedicine>> Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        return Ok(await _medicineRepository.Delete(id));
+        if (id == 0) return WrongInputArgument();
+        return ConvertResult(await medicineRepository.Delete(id));
     }
 }
