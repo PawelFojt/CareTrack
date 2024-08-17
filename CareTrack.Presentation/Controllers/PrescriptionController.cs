@@ -44,6 +44,13 @@ public class PrescriptionController(IMediator mediator) : CommonController
         var result = await mediator.Send(new GetPrescriptionWithMedicinesQuery { Id = id });
         return ConvertResult(result);
     }
+    
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdatePrescriptionCommand command)
+    {
+        var result = await mediator.Send(command);
+        return ConvertResult(result);
+    }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
