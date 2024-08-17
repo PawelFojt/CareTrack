@@ -1,4 +1,5 @@
-﻿using CareTrack.Application;
+﻿using System.Reflection;
+using CareTrack.Application;
 using CareTrack.Infrastructure;
 using CareTrack.Infrastructure.presistance;
 using CareTrack.Presentation;
@@ -26,6 +27,9 @@ public class Startup(IConfiguration configuration)
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
+        var applicationLayer = Assembly.Load("CareTrack.Application");
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(applicationLayer));
+        
         services
             .AddApplication()
             .AddPresentation()

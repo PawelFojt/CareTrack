@@ -1,5 +1,7 @@
-﻿namespace CareTrack.Infrastructure.Entities;
-public class Patient
+﻿using CareTrack.Domain.Models;
+
+namespace CareTrack.Infrastructure.Entities;
+public class Patient : IPatient
 {
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
@@ -9,5 +11,5 @@ public class Patient
     public string PhoneNumber { get; set; } = string.Empty;
     public DateTime Admission { get; set; }
     public DateTime Discharge { get; set; }
-    public virtual ICollection<PatientRecipe>? PatientRecipes { get; set; }
+    public virtual ICollection<PatientPrescription>? PatientPrescriptions { get; set; }
 }

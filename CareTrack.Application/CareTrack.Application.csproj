@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CareTrack.Domain\CareTrack.Domain.csproj" />
+    <ProjectReference Include="..\CareTrack.Infrastructure\CareTrack.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

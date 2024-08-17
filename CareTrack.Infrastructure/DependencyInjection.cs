@@ -13,7 +13,9 @@ public static class DependencyInjection
     {
         services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("CareTrackDb")));
+        
         services.AddScoped<IMedicineRepository, MedicineRepository>();
+        services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
         return services;
     }
 }

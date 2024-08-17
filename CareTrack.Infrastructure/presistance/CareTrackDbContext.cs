@@ -5,9 +5,9 @@ namespace CareTrack.Infrastructure.presistance;
 public class CareTrackDbContext(DbContextOptions<CareTrackDbContext> options) : DbContext(options)
 {
     public DbSet<Medicine> Medicines { get; set; }
-    public DbSet<RecipeMedicine> RecipeMedicines { get; set; }
-    public DbSet<Recipe> Recipes { get; set; } 
-    public DbSet<PatientRecipe> PatientRecipes { get; set; }
+    public DbSet<PrescriptionMedicine> PrescriptionMedicines { get; set; }
+    public DbSet<Prescription> Prescriptions { get; set; } 
+    public DbSet<PatientPrescription> PatientPrescriptions { get; set; }
     public DbSet<Patient> Patients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -17,36 +17,35 @@ public class CareTrackDbContext(DbContextOptions<CareTrackDbContext> options) : 
             entity.HasKey(e => e.Id);
         });
 
-        modelBuilder.Entity<RecipeMedicine>(entity =>
+        modelBuilder.Entity<PrescriptionMedicine>(entity =>
         {
             entity.HasKey(e => new
             {
-                e.RecipeId,
+                e.PrescriptionId,
                 e.MedicineId
             });
 
             entity
-                .HasOne(e => e.Recipe)
-                .WithMany(e => e.RecipeMedicines)
-                .HasForeignKey(e => e.RecipeId);
+                .HasOne(e => e.Prescription)
+                .WithMany(e => e.PrescriptionMedicines)
+                .HasForeignKey(e => e.PrescriptionId);
         });
 
-        modelBuilder.Entity<Recipe>(entity =>
+        modelBuilder.Entity<Prescription>(entity =>
         {
             entity.HasKey(e => e.Id);
         });
 
-        modelBuilder.Entity<PatientRecipe>(entity =>
+        modelBuilder.Entity<PatientPrescription>(entity =>
         {
             entity.HasKey(e => new
             {
-                e.PatientId,
-                e.RecipeId
+                e.PatientId, e.PrescriptionId
             });
 
             entity
                 .HasOne(e => e.Patient)
-                .WithMany(e => e.PatientRecipes)
+                .WithMany(e => e.PatientPrescriptions)
                 .HasForeignKey(e =>e.PatientId);
         });
 

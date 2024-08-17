@@ -1,3 +1,5 @@
+using CareTrack.Application.Medicine.Command;
+using CareTrack.Application.Medicine.Queries;
 using CareTrack.Domain.Models;
 using CareTrack.Domain.Repositories;
 using MediatR;
@@ -8,32 +10,50 @@ namespace CareTrack.Server.Controllers;
 
 [ApiController]
 [Route("Medicine")]
-public class MedicineController(IMediator mediator, IMedicineRepository medicineRepository) : CommonController(mediator)
+public class MedicineController(IMediator mediator) : CommonController(mediator)
 {
     [HttpGet]
     public async Task<IActionResult> GetList()
     {
-        return ConvertResult(await medicineRepository.GetList());
+        var getMedicinesQuery = new GetMedicinesQuery();
+        var result = await mediator.Send(getMedicinesQuery);
+        return ConvertResult(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> Add([FromBody]Medicine? medicine)
     {
         if (medicine is null) return WrongInputArgument();
-        return ConvertResult(await medicineRepository.Add(medicine));
+        var addMedicineCommand = new AddMedicineCommand()
+        {
+            Medicine = medicine
+        };
+
+        var result = await mediator.Send(addMedicineCommand);
+        return ConvertResult(result);
     }
 
     [HttpPut]
     public async Task<IActionResult> Update([FromBody]Medicine? medicine)
     {
         if (medicine is null) return WrongInputArgument();
-        return ConvertResult(await medicineRepository.Update(medicine));
+        var updateMedicineCommand = new UpdateMedicineCommand()
+        {
+            Medicine = medicine
+        };
+        var result = await mediator.Send(updateMedicineCommand);
+        return ConvertResult(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         if (id == 0) return WrongInputArgument();
-        return ConvertResult(await medicineRepository.Delete(id));
+        var deleteMedicineCommand = new DeleteMedicineCommand()
+        {
+            Id = id
+        };
+        var result = await mediator.Send(deleteMedicineCommand);
+        return ConvertResult(result);
     }
 }
