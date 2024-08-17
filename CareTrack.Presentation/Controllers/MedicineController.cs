@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Medicine = CareTrack.Infrastructure.Entities.Medicine;
 
-namespace CareTrack.Server.Controllers;
+namespace CareTrack.Presentation.Controllers;
 
 [ApiController]
 [Route("Medicine")]

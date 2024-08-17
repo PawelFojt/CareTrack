@@ -1,10 +1,7 @@
 ﻿using System.Reflection;
 using CareTrack.Application;
 using CareTrack.Infrastructure;
-using CareTrack.Infrastructure.presistance;
 using CareTrack.Presentation;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 
 namespace CareTrack.Server;
 
@@ -14,7 +11,7 @@ public class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddPresentation();
         services.AddCors(cors => cors.AddDefaultPolicy(policy =>
         {
             policy.AllowAnyHeader();

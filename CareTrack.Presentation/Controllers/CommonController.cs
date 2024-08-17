@@ -2,7 +2,7 @@ using CareTrack.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CareTrack.Server.Controllers;
+namespace CareTrack.Presentation.Controllers;
 
 public class CommonController : Controller
 {

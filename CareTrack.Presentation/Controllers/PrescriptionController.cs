@@ -3,7 +3,7 @@ using CareTrack.Application.Prescription.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CareTrack.Server.Controllers;
+namespace CareTrack.Presentation.Controllers;
 
 [ApiController]
 [Route("prescription")]
