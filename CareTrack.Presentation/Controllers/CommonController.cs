@@ -6,12 +6,6 @@ namespace CareTrack.Presentation.Controllers;
 
 public class CommonController : Controller
 {
-    private readonly IMediator _mediator;
-
-    public CommonController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
 
     protected IActionResult ConvertResult<T>(Result<T> result)
     {

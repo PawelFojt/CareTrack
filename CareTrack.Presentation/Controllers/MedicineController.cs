@@ -9,8 +9,8 @@ using Medicine = CareTrack.Infrastructure.Entities.Medicine;
 namespace CareTrack.Presentation.Controllers;
 
 [ApiController]
-[Route("Medicine")]
-public class MedicineController(IMediator mediator) : CommonController(mediator)
+[Route("medicine")]
+public class MedicineController(IMediator mediator) : CommonController
 {
     [HttpGet]
     public async Task<IActionResult> GetList()

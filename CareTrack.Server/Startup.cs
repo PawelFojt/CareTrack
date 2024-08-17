@@ -7,11 +7,10 @@ namespace CareTrack.Server;
 
 public class Startup(IConfiguration configuration)
 {
-    public IConfiguration Configuration { get; set; } = configuration;
+    private IConfiguration Configuration { get; set; } = configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddPresentation();
         services.AddCors(cors => cors.AddDefaultPolicy(policy =>
         {
             policy.AllowAnyHeader();
@@ -30,7 +29,7 @@ public class Startup(IConfiguration configuration)
         services
             .AddApplication()
             .AddPresentation()
-            .AddInfractructure(configuration);
+            .AddInfractructure(Configuration);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment host)

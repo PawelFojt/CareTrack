@@ -85,6 +85,36 @@ public class PrescriptionRepository : IPrescriptionRepository
 
         return new Result<IEnumerable<IPrescriptionWithMedicines>>(prescriptionWithMedicines);
     }
+    
+    public async Task<Result<IPrescriptionWithMedicines>> Get(int id)
+    {
+        var prescription = await _context.Prescriptions
+            .Include(r => r.PrescriptionMedicines)
+                .ThenInclude(rm => rm.Medicine)
+            .FirstOrDefaultAsync(r => r.Id == id);
+
+        if (prescription == null)
+        {
+            return Result<IPrescriptionWithMedicines>.Error("Nie znaleziono recepty", HttpStatusCode.NotFound);
+        }
+
+        var prescriptionWithMedicines = new Domain.Models.PrescriptionWithMedicines()
+        {
+            Id = prescription.Id,
+            Quantity = prescription.Quantity,
+            DosingTime = prescription.DosingTime,
+            Medicines = prescription.PrescriptionMedicines.Select(rm => new Domain.Models.Medicine()
+            {
+                Id = rm.Medicine.Id,
+                Name = rm.Medicine.Name,
+                Quantity = rm.Medicine.Quantity,
+                ExpirationDate = rm.Medicine.ExpirationDate
+            })
+        };
+
+        return new Result<IPrescriptionWithMedicines>(prescriptionWithMedicines);
+    }
+    
     public async Task<Result<IPrescription>> Add(IPrescription prescription)
     {
         var prescriptionToAdd = new Prescription
@@ -115,16 +145,26 @@ public class PrescriptionRepository : IPrescriptionRepository
         return new Result<IPrescription>(updated.Entity);
     }
 
-    public async Task<Result<IMedicine>> Delete(int id)
+    public async Task<Result<IPrescription>> Delete(int id)
     {
-        var medicineToDelete = await _context.Medicines.FindAsync(id);
-
-        if (medicineToDelete == null) return Result<IMedicine>.Error("Brak leku w bazie danych", HttpStatusCode.NotFound);
-
-        _context.Medicines.Remove(medicineToDelete);
-        await _context.SaveChangesAsync();
-
+        var prescription = await _context.Prescriptions.FindAsync(id);
         
-        return Result<IMedicine>.Info("Pomyślnie usunięto");
+        var prescriptionMedicines = await _context.PrescriptionMedicines
+            .Where(rm => rm.PrescriptionId == id)
+            .ToListAsync();
+
+        if (prescription == null) return Result<IPrescription>.Error("Brak recepty w bazie danych", HttpStatusCode.NotFound);
+
+        _context.Prescriptions.Remove(prescription);
+        
+        if (prescriptionMedicines.Count != 0)
+        {
+            _context.PrescriptionMedicines.RemoveRange(prescriptionMedicines);
+        }
+        
+        await _context.SaveChangesAsync();
+        
+        return new Result<IPrescription>(prescription);
     }
+    
 }
