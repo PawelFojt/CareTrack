@@ -6,12 +6,17 @@ namespace CareTrack.Server.Medicine.Command;
 
 public class DeleteMedicineCommand : IRequest<Result<IMedicine>>
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
 }
 
-public class DeleteMedicineCommandHandler(IMedicineRepository medicineRepository)
+public class DeleteMedicineCommandHandler
     : IRequestHandler<DeleteMedicineCommand, Result<IMedicine>>
 {
+    private readonly IMedicineRepository medicineRepository;
+    public DeleteMedicineCommandHandler(IMedicineRepository medicineRepository)
+    {
+        this.medicineRepository = medicineRepository;
+    }
     public async Task<Result<IMedicine>> Handle(DeleteMedicineCommand request, CancellationToken cancellationToken)
     {
         var medicine = await medicineRepository.Delete(request.Id);

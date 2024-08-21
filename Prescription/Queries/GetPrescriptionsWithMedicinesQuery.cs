@@ -8,9 +8,14 @@ public class GetPrescriptionsWithMedicinesQuery : IRequest<Result<IEnumerable<IP
 {
 }
 
-public class GetPrescriptionsWithMedicinesQueryHandler(IPrescriptionRepository prescriptionRepository)
+public class GetPrescriptionsWithMedicinesQueryHandler
     : IRequestHandler<GetPrescriptionsWithMedicinesQuery, Result<IEnumerable<IPrescriptionWithMedicines>>>
 {
+    private readonly IPrescriptionRepository prescriptionRepository;
+    public GetPrescriptionsWithMedicinesQueryHandler(IPrescriptionRepository prescriptionRepository)
+    {
+        this.prescriptionRepository = prescriptionRepository;
+    }
     public async Task<Result<IEnumerable<IPrescriptionWithMedicines>>> Handle(
         GetPrescriptionsWithMedicinesQuery request,
         CancellationToken cancellationToken)

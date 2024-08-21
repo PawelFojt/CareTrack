@@ -7,8 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace CareTrack.Server.Repositories;
 
 
-public class PrescriptionRepository(CareTrackDbContext context) : IPrescriptionRepository
+public class PrescriptionRepository : IPrescriptionRepository
 {
+    private readonly CareTrackDbContext context;
+
+    public PrescriptionRepository(CareTrackDbContext context)
+    {
+        this.context = context;
+    }
 
     public async Task<Result<IPrescription>> AddMedicineToPrescription(int prescriptionId, int medicineId)
     {
@@ -61,12 +67,12 @@ public class PrescriptionRepository(CareTrackDbContext context) : IPrescriptionR
                     .ThenInclude(rm => rm.Medicine)
                 .AsNoTracking()
                 .ToListAsync();
-        var prescriptionWithMedicines = prescriptions.Select(r => new PrescriptionWithMedicines()
+        var prescriptionWithMedicines = prescriptions.Select(r => new PrescriptionResultWithMedicines()
         {
             Id = r.Id,
             Quantity = r.Quantity,
             DosingTime = r.DosingTime,
-            Medicines = r.PrescriptionMedicines.Select(rm => new Models.Medicine()
+            Medicines = r.PrescriptionMedicines.Select(rm => new Models.MedicineResult()
             {
                 Id = rm.Medicine.Id,
                 Name = rm.Medicine.Name,
@@ -90,12 +96,12 @@ public class PrescriptionRepository(CareTrackDbContext context) : IPrescriptionR
             return Result<IPrescriptionWithMedicines>.Error("Nie znaleziono recepty", HttpStatusCode.NotFound);
         }
 
-        var prescriptionWithMedicines = new PrescriptionWithMedicines()
+        var prescriptionWithMedicines = new PrescriptionResultWithMedicines()
         {
             Id = prescription.Id,
             Quantity = prescription.Quantity,
             DosingTime = prescription.DosingTime,
-            Medicines = prescription.PrescriptionMedicines.Select(rm => new Models.Medicine()
+            Medicines = prescription.PrescriptionMedicines.Select(rm => new Models.MedicineResult()
             {
                 Id = rm.Medicine.Id,
                 Name = rm.Medicine.Name,
@@ -119,12 +125,12 @@ public class PrescriptionRepository(CareTrackDbContext context) : IPrescriptionR
             return Result<IEnumerable<IPrescriptionWithMedicines>>.Error("Nie znaleziono recept", HttpStatusCode.NotFound);
         }
 
-        var prescriptionWithMedicines = prescriptions.Select(r => new PrescriptionWithMedicines()
+        var prescriptionWithMedicines = prescriptions.Select(r => new PrescriptionResultWithMedicines()
         {
             Id = r.Id,
             Quantity = r.Quantity,
             DosingTime = r.DosingTime,
-            Medicines = r.PrescriptionMedicines.Select(rm => new Models.Medicine()
+            Medicines = r.PrescriptionMedicines.Select(rm => new Models.MedicineResult()
             {
                 Id = rm.Medicine.Id,
                 Name = rm.Medicine.Name,

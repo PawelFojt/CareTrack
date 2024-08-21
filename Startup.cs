@@ -7,9 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CareTrack.Server;
 
-public class Startup(IConfiguration configuration)
+public class Startup
 {
-    private IConfiguration Configuration { get; set; } = configuration;
+    private IConfiguration Configuration { get; set; }
+    public Startup(IConfiguration configuration)
+    {
+        Configuration = configuration;
+    }
+    
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -27,7 +32,7 @@ public class Startup(IConfiguration configuration)
         // services.AddValidatorsFromAssembly(assembly);
         
         services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("CareTrackDb")));
+            options.UseNpgsql(Configuration.GetConnectionString("CareTrackDb")));
         
         services.AddScoped<IMedicineRepository, MedicineRepository>();
         services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();

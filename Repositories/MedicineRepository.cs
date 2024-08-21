@@ -5,19 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CareTrack.Server.Repositories;
 
-public class MedicineRepository(CareTrackDbContext context) : IMedicineRepository
+public class MedicineRepository : IMedicineRepository
 {
+    private readonly CareTrackDbContext context;
 
-    public async Task<Result<List<IMedicine>>> GetList()
+    public MedicineRepository(CareTrackDbContext context)
+    {
+        this.context = context;
+    }
+
+    public async Task<Result<List<MedicineResult>>> GetList()
     {
         var result =
             await context.Medicines
                 .AsNoTracking()
-                .Select(medicine => (IMedicine)medicine)
+                .Select(medicine => new MedicineResult()
+                {
+                    Id = medicine.Id,
+                    Name = medicine.Name,
+                    Quantity = medicine.Quantity,
+                    ExpirationDate = medicine.ExpirationDate
+                })
                 .ToListAsync();
       
 
-        return new Result<List<IMedicine>>(result);
+        return new Result<List<MedicineResult>>(result);
     }
     public async Task<Result<IMedicine>> Add(IMedicine medicine)
     {

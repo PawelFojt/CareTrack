@@ -29,7 +29,7 @@ public class PatientWithPrescriptions : IPatientWithPrescriptions
     public IEnumerable<IPrescriptionWithMedicines> PrescriptionsWithMedicines { get; set; } = new List<IPrescriptionWithMedicines>();
 }
 
-public class Patient : IPatient
+public class PatientResult : IPatient
 {
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty;

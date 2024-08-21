@@ -7,8 +7,13 @@ namespace CareTrack.Server.Controllers;
 
 [ApiController]
 [Route("prescription")]
-public class PrescriptionController(IMediator mediator) : CommonController
+public class PrescriptionController : CommonController
 {
+    private readonly IMediator mediator;
+    public PrescriptionController(IMediator mediator)
+    {
+        this.mediator = mediator;
+    }
     [HttpPost("{prescriptionId:int}/add-medicine/{medicineId:int}")]
     public async Task<IActionResult> AddMedicineToPrescription(int prescriptionId, int medicineId)
     {

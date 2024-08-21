@@ -2,8 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace CareTrack.Server.presistance;
-public class CareTrackDbContext(DbContextOptions<CareTrackDbContext> options) : DbContext(options)
+public class CareTrackDbContext : DbContext
 {
+    public CareTrackDbContext(DbContextOptions<CareTrackDbContext> options) : base(options)
+    {
+        
+    }
     public DbSet<Entities.Medicine> Medicines { get; set; }
     public DbSet<PrescriptionMedicine> PrescriptionMedicines { get; set; }
     public DbSet<Entities.Prescription> Prescriptions { get; set; } 

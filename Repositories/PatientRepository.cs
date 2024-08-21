@@ -8,8 +8,16 @@ using Patient = CareTrack.Server.Entities.Patient;
 namespace CareTrack.Server.Repositories;
 
 
-public class PatientRepository(CareTrackDbContext context, IPrescriptionRepository prescriptionRepository) : IPatientRepository
+public class PatientRepository : IPatientRepository
 {
+    private readonly CareTrackDbContext context;
+    private readonly IPrescriptionRepository prescriptionRepository;
+
+    public PatientRepository(CareTrackDbContext context, IPrescriptionRepository prescriptionRepository)
+    {
+        this.context = context;
+        this.prescriptionRepository = prescriptionRepository;
+    }
     public async Task<Result<IPatientWithPrescriptions>> AddPrescriptionToPatient(int patientId, int prescriptionId)
     {
         var patient = await context.Patients

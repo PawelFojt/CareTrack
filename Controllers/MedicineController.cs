@@ -8,8 +8,13 @@ namespace CareTrack.Server.Controllers;
 
 [ApiController]
 [Route("medicine")]
-public class MedicineController(IMediator mediator) : CommonController
+public class MedicineController : CommonController
 {
+    private readonly IMediator mediator;
+    public MedicineController(IMediator mediator)
+    {
+        this.mediator = mediator;
+    }
     [HttpGet]
     public async Task<IActionResult> GetList()
     {
@@ -19,7 +24,7 @@ public class MedicineController(IMediator mediator) : CommonController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody]Models.Medicine? medicine)
+    public async Task<IActionResult> Add([FromBody]Models.MedicineResult? medicine)
     {
         if (medicine is null) return WrongInputArgument();
         var addMedicineCommand = new AddMedicineCommand()
@@ -32,7 +37,7 @@ public class MedicineController(IMediator mediator) : CommonController
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody]Models.Medicine? medicine)
+    public async Task<IActionResult> Update([FromBody]Models.MedicineResult? medicine)
     {
         if (medicine is null) return WrongInputArgument();
         var updateMedicineCommand = new UpdateMedicineCommand()

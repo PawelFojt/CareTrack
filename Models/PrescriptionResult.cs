@@ -12,14 +12,14 @@ public interface IPrescriptionWithMedicines : IPrescription
     IEnumerable<IMedicine> Medicines { get; set; }
 }
 
-public class Prescription : IPrescription
+public class PrescriptionResult : IPrescription
 {
     public int Id { get; set; }
     public int Quantity { get; set; }
-    public List<TimeOnly> DosingTime { get; set; } = [];
+    public List<TimeOnly> DosingTime { get; set; } = new();
 }
 
-public class PrescriptionWithMedicines : Prescription, IPrescriptionWithMedicines
+public class PrescriptionResultWithMedicines : PrescriptionResult, IPrescriptionWithMedicines
 {
-    public IEnumerable<IMedicine> Medicines { get; set; } = [];
+    public IEnumerable<IMedicine> Medicines { get; set; } = new List<IMedicine>();
 }

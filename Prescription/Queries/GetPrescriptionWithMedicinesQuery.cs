@@ -6,12 +6,17 @@ namespace CareTrack.Server.Prescription.Queries;
 
 public class GetPrescriptionWithMedicinesQuery : IRequest<Result<IPrescriptionWithMedicines>>
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
 }
 
-public class GetPrescriptionWithMedicinesQueryHandler(IPrescriptionRepository prescriptionRepository)
+public class GetPrescriptionWithMedicinesQueryHandler
     : IRequestHandler<GetPrescriptionWithMedicinesQuery, Result<IPrescriptionWithMedicines>>
 {
+    private readonly IPrescriptionRepository prescriptionRepository;
+    public GetPrescriptionWithMedicinesQueryHandler(IPrescriptionRepository prescriptionRepository)
+    {
+        this.prescriptionRepository = prescriptionRepository;
+    }
     public async Task<Result<IPrescriptionWithMedicines>> Handle(
         GetPrescriptionWithMedicinesQuery request,
         CancellationToken cancellationToken)
