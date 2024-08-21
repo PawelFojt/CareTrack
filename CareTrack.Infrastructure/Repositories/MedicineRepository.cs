@@ -7,19 +7,13 @@ using Medicine = CareTrack.Infrastructure.Entities.Medicine;
 
 namespace CareTrack.Infrastructure.Repositories;
 
-public class MedicineRepository : IMedicineRepository
+public class MedicineRepository(CareTrackDbContext context) : IMedicineRepository
 {
-    private readonly CareTrackDbContext _context;
-
-    public MedicineRepository(CareTrackDbContext context)
-    {
-        _context = context;
-    }
 
     public async Task<Result<List<IMedicine>>> GetList()
     {
         var result =
-            await _context.Medicines
+            await context.Medicines
                 .AsNoTracking()
                 .Select(medicine => (IMedicine)medicine)
                 .ToListAsync();
@@ -29,15 +23,15 @@ public class MedicineRepository : IMedicineRepository
     }
     public async Task<Result<IMedicine>> Add(IMedicine medicine)
     {
-        var added = _context.Medicines
+        var added = context.Medicines
             .Add((Medicine)medicine);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return new Result<IMedicine>(added.Entity);
     }
 
     public async Task<Result<IMedicine>> Update(IMedicine medicine)
     {
-        var medicineToUpdate = await _context.Medicines.FindAsync(medicine.Id);
+        var medicineToUpdate = await context.Medicines.FindAsync(medicine.Id);
 
         if (medicineToUpdate == null) return Result<IMedicine>.Error("Brak leku w bazie danych", HttpStatusCode.NotFound);
 
@@ -45,22 +39,22 @@ public class MedicineRepository : IMedicineRepository
         medicineToUpdate.Quantity = medicine.Quantity;
         medicineToUpdate.ExpirationDate = medicine.ExpirationDate;
         
-        var updated = _context.Medicines
+        var updated = context.Medicines
             .Update(medicineToUpdate);
         
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         
         return new Result<IMedicine>(updated.Entity);
     }
 
     public async Task<Result<IMedicine>> Delete(int id)
     {
-        var medicineToDelete = await _context.Medicines.FindAsync(id);
+        var medicineToDelete = await context.Medicines.FindAsync(id);
 
         if (medicineToDelete == null) return Result<IMedicine>.Error("Brak leku w bazie danych", HttpStatusCode.NotFound);
 
-        _context.Medicines.Remove(medicineToDelete);
-        await _context.SaveChangesAsync();
+        context.Medicines.Remove(medicineToDelete);
+        await context.SaveChangesAsync();
 
         
         return Result<IMedicine>.Info("Pomyślnie usunięto");

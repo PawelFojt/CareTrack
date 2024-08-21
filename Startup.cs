@@ -34,19 +34,21 @@ public class Startup(IConfiguration configuration)
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment host)
     {
-        if(host.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
         
-        app.UseHttpsRedirection();
+        app.UseDeveloperExceptionPage();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        
+        
         app.UseDefaultFiles();
         app.UseStaticFiles();
         app.UseRouting();
 
-        app.UseCors();
+        app.UseCors(x =>
+            x.SetIsOriginAllowed(_ => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

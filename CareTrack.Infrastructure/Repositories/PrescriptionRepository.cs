@@ -9,30 +9,24 @@ using Prescription = CareTrack.Infrastructure.Entities.Prescription;
 namespace CareTrack.Infrastructure.Repositories;
 
 
-public class PrescriptionRepository : IPrescriptionRepository
+public class PrescriptionRepository(CareTrackDbContext context) : IPrescriptionRepository
 {
-    private readonly CareTrackDbContext _context;
-
-    public PrescriptionRepository(CareTrackDbContext context)
-    {
-        _context = context;
-    }
 
     public async Task<Result<IPrescription>> AddMedicineToPrescription(int prescriptionId, int medicineId)
     {
-        var prescription = await _context.Prescriptions
+        var prescription = await context.Prescriptions
             .Include(r => r.PrescriptionMedicines)
                 .ThenInclude(rm => rm.Medicine)
             .FirstOrDefaultAsync(r => r.Id == prescriptionId);
 
-        var medicine = await _context.Medicines.FindAsync(medicineId);
+        var medicine = await context.Medicines.FindAsync(medicineId);
 
         if (prescription == null || medicine == null)
         {
             return Result<IPrescription>.Error("Nie znaleziono przepisu lub leku", HttpStatusCode.NotFound);
         }
 
-        var existingLink = await _context.PrescriptionMedicines
+        var existingLink = await context.PrescriptionMedicines
             .FirstOrDefaultAsync(rm => rm.PrescriptionId == prescriptionId && rm.MedicineId == medicineId);
 
         if (existingLink != null)
@@ -46,10 +40,10 @@ public class PrescriptionRepository : IPrescriptionRepository
             MedicineId = medicineId
         };
 
-        _context.PrescriptionMedicines.Add(prescriptionMedicine);
-        await _context.SaveChangesAsync();
+        context.PrescriptionMedicines.Add(prescriptionMedicine);
+        await context.SaveChangesAsync();
 
-        prescription = await _context.Prescriptions
+        prescription = await context.Prescriptions
             .Include(r => r.PrescriptionMedicines)
                 .ThenInclude(rm => rm.Medicine)
             .FirstOrDefaultAsync(r => r.Id == prescriptionId);
@@ -61,10 +55,10 @@ public class PrescriptionRepository : IPrescriptionRepository
 
         return new(prescription);
     }
-    public async Task<Result<IEnumerable<IPrescriptionWithMedicines>>> GetList()
+    public async Task<Result<IEnumerable<IPrescriptionWithMedicines>>> List()
     {
         var prescriptions =
-            await _context.Prescriptions
+            await context.Prescriptions
                 .Include(r => r.PrescriptionMedicines)
                     .ThenInclude(rm => rm.Medicine)
                 .AsNoTracking()
@@ -88,7 +82,7 @@ public class PrescriptionRepository : IPrescriptionRepository
     
     public async Task<Result<IPrescriptionWithMedicines>> Get(int id)
     {
-        var prescription = await _context.Prescriptions
+        var prescription = await context.Prescriptions
             .Include(r => r.PrescriptionMedicines)
                 .ThenInclude(rm => rm.Medicine)
             .FirstOrDefaultAsync(r => r.Id == id);
@@ -114,6 +108,35 @@ public class PrescriptionRepository : IPrescriptionRepository
 
         return new Result<IPrescriptionWithMedicines>(prescriptionWithMedicines);
     }
+
+    public async Task<Result<IEnumerable<IPrescriptionWithMedicines>>> ListByIds(IEnumerable<int> ids)
+    {
+        var prescriptions = await context.Prescriptions
+            .Include(r => r.PrescriptionMedicines)
+            .ThenInclude(rm => rm.Medicine)
+            .Where(r => ids.Contains(r.Id))
+            .ToListAsync();
+        if (prescriptions.Count == 0)
+        {
+            return Result<IEnumerable<IPrescriptionWithMedicines>>.Error("Nie znaleziono recept", HttpStatusCode.NotFound);
+        }
+
+        var prescriptionWithMedicines = prescriptions.Select(r => new Domain.Models.PrescriptionWithMedicines()
+        {
+            Id = r.Id,
+            Quantity = r.Quantity,
+            DosingTime = r.DosingTime,
+            Medicines = r.PrescriptionMedicines.Select(rm => new Domain.Models.Medicine()
+            {
+                Id = rm.Medicine.Id,
+                Name = rm.Medicine.Name,
+                Quantity = rm.Medicine.Quantity,
+                ExpirationDate = rm.Medicine.ExpirationDate
+            })
+        });
+
+        return new Result<IEnumerable<IPrescriptionWithMedicines>>(prescriptionWithMedicines);
+    }
     
     public async Task<Result<IPrescription>> Add(IPrescription prescription)
     {
@@ -122,47 +145,47 @@ public class PrescriptionRepository : IPrescriptionRepository
             Quantity = prescription.Quantity,
             DosingTime = prescription.DosingTime,
         };
-        var added = _context.Prescriptions
+        var added = context.Prescriptions
             .Add(prescriptionToAdd);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return new Result<IPrescription>(added.Entity);
     }
 
     public async Task<Result<IPrescription>> Update(IPrescription prescription)
     {
-        var prescriptionToUpdate = await _context.Prescriptions.FindAsync(prescription.Id);
+        var prescriptionToUpdate = await context.Prescriptions.FindAsync(prescription.Id);
 
         if (prescriptionToUpdate == null) return Result<IPrescription>.Error("Brak recepty w bazie danych", HttpStatusCode.NotFound);
 
         prescriptionToUpdate.Quantity = prescription.Quantity;
         prescriptionToUpdate.DosingTime = prescription.DosingTime;
         
-        var updated = _context.Prescriptions
+        var updated = context.Prescriptions
             .Update(prescriptionToUpdate);
         
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         
         return new Result<IPrescription>(updated.Entity);
     }
 
     public async Task<Result<IPrescription>> Delete(int id)
     {
-        var prescription = await _context.Prescriptions.FindAsync(id);
+        var prescription = await context.Prescriptions.FindAsync(id);
         
-        var prescriptionMedicines = await _context.PrescriptionMedicines
+        var prescriptionMedicines = await context.PrescriptionMedicines
             .Where(rm => rm.PrescriptionId == id)
             .ToListAsync();
 
         if (prescription == null) return Result<IPrescription>.Error("Brak recepty w bazie danych", HttpStatusCode.NotFound);
 
-        _context.Prescriptions.Remove(prescription);
+        context.Prescriptions.Remove(prescription);
         
         if (prescriptionMedicines.Count != 0)
         {
-            _context.PrescriptionMedicines.RemoveRange(prescriptionMedicines);
+            context.PrescriptionMedicines.RemoveRange(prescriptionMedicines);
         }
         
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         
         return new Result<IPrescription>(prescription);
     }

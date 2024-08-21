@@ -15,7 +15,7 @@ public class GetPrescriptionsWithMedicinesQueryHandler(IPrescriptionRepository p
         GetPrescriptionsWithMedicinesQuery request,
         CancellationToken cancellationToken)
     {
-        var prescriptions = await prescriptionRepository.GetList();
+        var prescriptions = await prescriptionRepository.List();
         return prescriptions;
     }
 }

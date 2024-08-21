@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="CareTrack.Application\**" />
+    <Compile Remove="CareTrack.Domain\**" />
+    <Compile Remove="CareTrack.Infrastructure\**" />
+    <Compile Remove="CareTrack.Presentation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="CareTrack.Application\**" />
+    <EmbeddedResource Remove="CareTrack.Domain\**" />
+    <EmbeddedResource Remove="CareTrack.Infrastructure\**" />
+    <EmbeddedResource Remove="CareTrack.Presentation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="CareTrack.Application\**" />
+    <Content Remove="CareTrack.Domain\**" />
+    <Content Remove="CareTrack.Infrastructure\**" />
+    <Content Remove="CareTrack.Presentation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="CareTrack.Application\**" />
+    <None Remove="CareTrack.Domain\**" />
+    <None Remove="CareTrack.Infrastructure\**" />
+    <None Remove="CareTrack.Presentation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="CareTrack.Application\bin\Debug\net8.0\CareTrack.Application.deps.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Application\obj\CareTrack.Application.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Application\obj\Debug\net8.0\CareTrack.Application.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Application\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Application\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Domain\bin\Debug\net8.0\CareTrack.Domain.deps.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Domain\obj\CareTrack.Domain.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Domain\obj\Debug\net8.0\CareTrack.Domain.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Domain\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Domain\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Infrastructure\bin\Debug\net8.0\CareTrack.Infrastructure.deps.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Infrastructure\bin\Debug\net8.0\CareTrack.Infrastructure.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Infrastructure\obj\CareTrack.Infrastructure.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Infrastructure\obj\Debug\net8.0\CareTrack.Infrastructure.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Infrastructure\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Infrastructure\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Presentation\bin\Debug\net8.0\CareTrack.Presentation.deps.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Presentation\bin\Debug\net8.0\spa.proxy.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Presentation\obj\CareTrack.Presentation.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Presentation\obj\Debug\net8.0\CareTrack.Presentation.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Presentation\obj\Debug\net8.0\spa.proxy.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Presentation\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="CareTrack.Presentation\obj\project.packagespec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="CareTrack.Application\CareTrack.Application.csproj" />
+    <ProjectReference Include="CareTrack.Domain\CareTrack.Domain.csproj" />
+    <ProjectReference Include="CareTrack.Infrastructure\CareTrack.Infrastructure.csproj" />
+    <ProjectReference Include="CareTrack.Presentation\CareTrack.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>

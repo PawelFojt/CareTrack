@@ -1,4 +1,4 @@
-@CareTrack.Server_HostAddress = http://localhost:5294
+@CareTrack.Server_HostAddress = http://localhost:5248
 
 GET {{CareTrack.Server_HostAddress}}/weatherforecast/
 Accept: application/json
