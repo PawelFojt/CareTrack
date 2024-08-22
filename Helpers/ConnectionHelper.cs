@@ -7,7 +7,7 @@ public static class ConnectionHelper
     public static string GetConnectionString(IConfiguration configuration)
     {
         //var connectionString = configuration.GetConnectionString("CareTrackDb");
-        var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+        var databaseUrl = Environment.GetEnvironmentVariable("Postgres.DATABASE_URL");
        //return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
        return BuildConnectionString(databaseUrl);
     }
