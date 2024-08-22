@@ -5,6 +5,7 @@ using CareTrack.Server.Repositories;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace CareTrack.Server;
 
@@ -36,20 +37,29 @@ public class Startup
         services.AddSignalRCore();
         services.AddSignalR();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "CareTrack", Version = "v1" });
+        });
 
         var applicationLayer = Assembly.Load("CareTrack.Server");
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(applicationLayer));
-        
-        
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment host)
     {
-        app.UseDeveloperExceptionPage();
+        if (host.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+        
         app.UseSwagger();
         app.UseSwaggerUI();
-        
         
         app.UseDefaultFiles();
         app.UseStaticFiles();
@@ -60,6 +70,7 @@ public class Startup
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
+        
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
