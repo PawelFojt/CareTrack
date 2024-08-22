@@ -99,7 +99,7 @@ ClientBin/
 *~
 *.dbmdl
 *.[Pp]ublish.xml
-
+*.env
 *.publishsettings
 
 # RIA/Silverlight projects

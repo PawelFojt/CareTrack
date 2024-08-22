@@ -25,6 +25,7 @@ public class Startup
             policy.AllowAnyMethod();
             policy.AllowAnyOrigin();
         }));
+        DotNetEnv.Env.Load();
         services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
             options.UseNpgsql(ConnectionHelper.GetConnectionString(Configuration)));
         
