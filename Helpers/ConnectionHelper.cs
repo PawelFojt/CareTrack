@@ -25,6 +25,6 @@ public static class ConnectionHelper
             SslMode = SslMode.Require,
             TrustServerCertificate = true
         };
-        return builder.ConnectionString;
+        return builder.ToString();
     }
 }
