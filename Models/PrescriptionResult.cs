@@ -7,8 +7,11 @@ public interface IPrescription
     List<TimeOnly> DosingTime { get; set; }
 }
 
-public interface IPrescriptionWithMedicines : IPrescription
+public interface IPrescriptionWithMedicines
 {
+    int Id { get; set; }
+    int Quantity { get; set; }
+    List<TimeOnly> DosingTime { get; set; }
     IEnumerable<IMedicine> Medicines { get; set; }
 }
 

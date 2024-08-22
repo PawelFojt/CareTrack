@@ -2,9 +2,9 @@
 using CareTrack.Server.Helpers;
 using CareTrack.Server.presistance;
 using CareTrack.Server.Repositories;
-using FluentValidation;
+using DateOnlyTimeOnly.AspNet.Converters;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 namespace CareTrack.Server;
@@ -16,7 +16,6 @@ public class Startup
     {
         Configuration = configuration;
     }
-    
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -33,13 +32,27 @@ public class Startup
         services.AddScoped<IMedicineRepository, MedicineRepository>();
         services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
         
-        services.AddControllers();
+        services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+                options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+            });
         services.AddSignalRCore();
         services.AddSignalR();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "CareTrack", Version = "v1" });
+            c.MapType<DateOnly>(() => new OpenApiSchema { 
+                Type = "string",
+                Format = "date" 
+            });
+            c.MapType<TimeOnly>(() => new OpenApiSchema
+            {
+                Type = "string",
+                Example = new OpenApiString("HH:mm:ss")
+            });
         });
 
         var applicationLayer = Assembly.Load("CareTrack.Server");

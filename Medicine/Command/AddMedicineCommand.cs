@@ -6,7 +6,7 @@ namespace CareTrack.Server.Medicine.Command;
 
 public class AddMedicineCommand : IRequest<Result<IMedicine>>
 {
-    public IMedicine Medicine { get; init; }
+    public MedicineResult Medicine { get; init; }
 }
 
 public class AddMedicineCommandHandler

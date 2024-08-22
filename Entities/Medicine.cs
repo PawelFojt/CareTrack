@@ -1,4 +1,5 @@
-﻿using CareTrack.Server.Models;
+﻿using System.Text.Json.Serialization;
+using CareTrack.Server.Models;
 
 namespace CareTrack.Server.Entities;
 public class Medicine : IMedicine

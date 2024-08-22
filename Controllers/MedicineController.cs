@@ -2,7 +2,6 @@ using CareTrack.Server.Medicine.Command;
 using CareTrack.Server.Medicine.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Medicine = CareTrack.Server.Entities.Medicine;
 
 namespace CareTrack.Server.Controllers;
 
@@ -24,15 +23,9 @@ public class MedicineController : CommonController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody]Models.MedicineResult? medicine)
+    public async Task<IActionResult> Add([FromBody]AddMedicineCommand command)
     {
-        if (medicine is null) return WrongInputArgument();
-        var addMedicineCommand = new AddMedicineCommand()
-        {
-            Medicine = medicine
-        };
-
-        var result = await mediator.Send(addMedicineCommand);
+        var result = await mediator.Send(command);
         return ConvertResult(result);
     }
 
