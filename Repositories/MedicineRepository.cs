@@ -14,7 +14,7 @@ public class MedicineRepository : IMedicineRepository
         this.context = context;
     }
 
-    public async Task<Result<List<MedicineResult>>> GetList()
+    public async Task<Result<IEnumerable<IMedicine>>> GetList()
     {
         var result =
             await context.Medicines
@@ -29,12 +29,18 @@ public class MedicineRepository : IMedicineRepository
                 .ToListAsync();
       
 
-        return new Result<List<MedicineResult>>(result);
+        return new (result);
     }
     public async Task<Result<IMedicine>> Add(IMedicine medicine)
     {
+        var medicineToAdd = new Entities.Medicine()
+        {
+            Name = medicine.Name,
+            Quantity = medicine.Quantity,
+            ExpirationDate = medicine.ExpirationDate
+        };
         var added = context.Medicines
-            .Add((Entities.Medicine)medicine);
+            .Add(medicineToAdd);
         await context.SaveChangesAsync();
         return new Result<IMedicine>(added.Entity);
     }
