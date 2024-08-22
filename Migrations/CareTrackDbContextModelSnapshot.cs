@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace CareTrack.Infrastructure.Migrations
+namespace CareTrack.Server.Migrations
 {
     [DbContext(typeof(CareTrackDbContext))]
     partial class CareTrackDbContextModelSnapshot : ModelSnapshot
@@ -18,12 +18,12 @@ namespace CareTrack.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "6.0.33")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.Medicine", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.Medicine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +31,7 @@ namespace CareTrack.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly?>("ExpirationDate")
+                    b.Property<DateOnly>("ExpirationDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Name")
@@ -45,7 +45,7 @@ namespace CareTrack.Infrastructure.Migrations
                     b.ToTable("Medicines");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.Patient", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.Patient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace CareTrack.Infrastructure.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.PatientPrescription", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.PatientPrescription", b =>
                 {
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
@@ -97,7 +97,7 @@ namespace CareTrack.Infrastructure.Migrations
                     b.ToTable("PatientPrescriptions");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.Prescription", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.Prescription", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace CareTrack.Infrastructure.Migrations
                     b.ToTable("Prescriptions");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.PrescriptionMedicine", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.PrescriptionMedicine", b =>
                 {
                     b.Property<int>("PrescriptionId")
                         .HasColumnType("integer");
@@ -132,15 +132,15 @@ namespace CareTrack.Infrastructure.Migrations
                     b.ToTable("PrescriptionMedicines");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.PatientPrescription", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.PatientPrescription", b =>
                 {
-                    b.HasOne("CareTrack.Infrastructure.Entities.Patient", "Patient")
+                    b.HasOne("CareTrack.Server.Entities.Patient", "Patient")
                         .WithMany("PatientPrescriptions")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CareTrack.Infrastructure.Entities.Prescription", "Prescription")
+                    b.HasOne("CareTrack.Server.Entities.Prescription", "Prescription")
                         .WithMany()
                         .HasForeignKey("PrescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -151,15 +151,15 @@ namespace CareTrack.Infrastructure.Migrations
                     b.Navigation("Prescription");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.PrescriptionMedicine", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.PrescriptionMedicine", b =>
                 {
-                    b.HasOne("CareTrack.Infrastructure.Entities.Medicine", "Medicine")
+                    b.HasOne("CareTrack.Server.Entities.Medicine", "Medicine")
                         .WithMany()
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CareTrack.Infrastructure.Entities.Prescription", "Prescription")
+                    b.HasOne("CareTrack.Server.Entities.Prescription", "Prescription")
                         .WithMany("PrescriptionMedicines")
                         .HasForeignKey("PrescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -170,12 +170,12 @@ namespace CareTrack.Infrastructure.Migrations
                     b.Navigation("Prescription");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.Patient", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.Patient", b =>
                 {
                     b.Navigation("PatientPrescriptions");
                 });
 
-            modelBuilder.Entity("CareTrack.Infrastructure.Entities.Prescription", b =>
+            modelBuilder.Entity("CareTrack.Server.Entities.Prescription", b =>
                 {
                     b.Navigation("PrescriptionMedicines");
                 });
