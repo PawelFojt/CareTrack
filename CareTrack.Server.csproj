@@ -33,6 +33,9 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Modules\Application\" />
+    <Folder Include="Modules\Domain\" />
+    <Folder Include="Modules\Presentation\" />
   </ItemGroup>
   
 </Project>

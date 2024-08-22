@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
 using CareTrack.Server.Helpers;
-using CareTrack.Server.presistance;
-using CareTrack.Server.Repositories;
+using CareTrack.Server.Modules.Domain.Repositories;
+using CareTrack.Server.Modules.Infrastructure.presistance;
+using CareTrack.Server.Modules.Infrastructure.Repositories;
 using DateOnlyTimeOnly.AspNet.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;

@@ -1,4 +1,4 @@
-using CareTrack.Server.presistance;
+using CareTrack.Server.Modules.Infrastructure.presistance;
 using Microsoft.EntityFrameworkCore;
 
 namespace CareTrack.Server.Helpers;
