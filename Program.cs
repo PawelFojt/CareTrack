@@ -1,3 +1,5 @@
+using CareTrack.Server.Helpers;
+
 namespace CareTrack.Server;
 
 public static class Program
@@ -5,6 +7,7 @@ public static class Program
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
+        DataHelper.ManageDataAsync(host.Services.CreateScope().ServiceProvider);
         await host.RunAsync();
     }
 

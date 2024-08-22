@@ -46,7 +46,6 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment host)
     {
-        DataHelper.ManageDataAsync(app.ApplicationServices).Wait();
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
