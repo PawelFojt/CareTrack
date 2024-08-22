@@ -6,9 +6,10 @@ public static class ConnectionHelper
 {
     public static string GetConnectionString(IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("CareTrackDb");
+        //var connectionString = configuration.GetConnectionString("CareTrackDb");
         var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-       return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
+       //return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
+       return BuildConnectionString(databaseUrl);
     }
     
     private static string BuildConnectionString(string databaseUrl)
