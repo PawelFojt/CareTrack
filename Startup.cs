@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CareTrack.Server.Helpers;
 using CareTrack.Server.presistance;
 using CareTrack.Server.Repositories;
 using FluentValidation;
@@ -24,15 +25,9 @@ public class Startup
             policy.AllowAnyMethod();
             policy.AllowAnyOrigin();
         }));
-
-        // var assembly = typeof(DependencyInjectionExtensions).Assembly;
-        // services.AddMediatR(configuration =>
-        //     configuration.RegisterServicesFromAssembly(assembly));
-        //
-        // services.AddValidatorsFromAssembly(assembly);
         
         services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("CareTrackDb")));
+            options.UseNpgsql(ConnectionHelper.GetConnectionString(Configuration)));
         
         services.AddScoped<IMedicineRepository, MedicineRepository>();
         services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
