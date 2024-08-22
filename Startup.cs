@@ -41,11 +41,12 @@ public class Startup
         var applicationLayer = Assembly.Load("CareTrack.Server");
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(applicationLayer));
         
+        
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment host)
     {
-        
+        DataHelper.ManageDataAsync(app.ApplicationServices).Wait();
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
