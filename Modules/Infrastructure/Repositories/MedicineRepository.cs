@@ -16,7 +16,7 @@ public class MedicineRepository : IMedicineRepository
         this.context = context;
     }
 
-    public async Task<Result<IEnumerable<IMedicine>>> GetList()
+    public async Task<Result<IEnumerable<IMedicine>>> List()
     {
         var result =
             await context.Medicines

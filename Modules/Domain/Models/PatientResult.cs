@@ -11,8 +11,16 @@ public interface IPatient
     public DateTime Discharge { get; set; }
 }
 
-public interface IPatientWithPrescriptions : IPatient
+public interface IPatientWithPrescriptions
 {
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; } 
+    public int Age { get; set; }
+    public int Weight { get; set; }
+    public string PhoneNumber { get; set; }
+    public DateTime Admission { get; set; }
+    public DateTime Discharge { get; set; }
     public IEnumerable<IPrescriptionWithMedicines> PrescriptionsWithMedicines { get; set; }
 }
 

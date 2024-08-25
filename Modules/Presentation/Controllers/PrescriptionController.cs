@@ -29,14 +29,14 @@ public class PrescriptionController : CommonController
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddPrescription([FromBody] AddPrescriptionCommand command)
+    public async Task<IActionResult> Add([FromBody] AddPrescriptionCommand command)
     {
         var result = await mediator.Send(command);
         return ConvertResult(result);
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetList()
+    public async Task<IActionResult> List()
     {
         var result = await mediator.Send(new GetPrescriptionsWithMedicinesQuery());
         return ConvertResult(result);

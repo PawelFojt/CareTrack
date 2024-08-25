@@ -16,7 +16,7 @@ public class MedicineController : CommonController
         this.mediator = mediator;
     }
     [HttpGet]
-    public async Task<IActionResult> GetList()
+    public async Task<IActionResult> List()
     {
         var getMedicinesQuery = new GetMedicinesQuery();
         var result = await mediator.Send(getMedicinesQuery);

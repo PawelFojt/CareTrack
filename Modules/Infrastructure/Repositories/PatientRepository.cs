@@ -70,7 +70,7 @@ public class PatientRepository : IPatientRepository
         }
         
         var patientPrescriptionsId = await context.PatientPrescriptions
-            .Where(pp => pp.PrescriptionId == id)
+            .Where(pp => pp.PatientId == id)
             .Select(pp => pp.PrescriptionId)
             .ToListAsync();
 
@@ -92,21 +92,41 @@ public class PatientRepository : IPatientRepository
         return new Result<IPatientWithPrescriptions>(patientWithPrescriptions);
     }
     
-    public async Task<Result<List<IPatient>>> List()
+    public async Task<Result<IEnumerable<IPatient>>> List()
     {
         var result =
             await context.Patients
                 .AsNoTracking()
-                .Select(patient => (IPatient)patient)
+                .Select(patient => new PatientResult()
+                {
+                    Id = patient.Id,
+                    Admission = patient.Admission,
+                    Age = patient.Age,
+                    Discharge = patient.Discharge,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    PhoneNumber = patient.PhoneNumber,
+                    Weight = patient.Weight
+                })
                 .ToListAsync();
         
-        return new Result<List<IPatient>>(result);
+        return new(result);
     }
     
     public async Task<Result<IPatient>> Add(IPatient patient)
     {
+        var patientToAdd = new Patient()
+        {
+            Admission = patient.Admission,
+            Age = patient.Age,
+            Discharge = patient.Discharge,
+            FirstName = patient.FirstName,
+            LastName = patient.LastName,
+            PhoneNumber = patient.PhoneNumber,
+            Weight = patient.Weight
+        };
         var added = context.Patients
-            .Add((Patient)patient);
+            .Add(patientToAdd);
         await context.SaveChangesAsync();
         return new Result<IPatient>(added.Entity);
     }

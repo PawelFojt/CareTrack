@@ -19,7 +19,7 @@ public class GetMedicinesQueryHandler
     }
     public async Task<Result<IEnumerable<IMedicine>>> Handle(GetMedicinesQuery request, CancellationToken cancellationToken)
     {
-        var medicines = await medicineRepository.GetList();
+        var medicines = await medicineRepository.List();
         if (medicines.IsError || medicines.Value is null) 
             return Result<IEnumerable<IMedicine>>.Error("Error while fetching medicines", HttpStatusCode.InternalServerError);
         return new (medicines.Value);
