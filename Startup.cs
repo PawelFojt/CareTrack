@@ -26,9 +26,10 @@ public class Startup
             options.AddPolicy("AllowAllOrigins",
                 builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.SetIsOriginAllowed(_ => true)
                         .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
         });
         services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
