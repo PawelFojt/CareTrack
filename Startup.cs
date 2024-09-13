@@ -75,10 +75,10 @@ public class Startup
         app.UseStaticFiles();
         app.UseRouting();
 
-        app.UseCors(x =>
-            x.AllowAnyMethod()
-             .AllowAnyHeader()
-             .AllowAnyOrigin());
+        app.UseCors(x =>x
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
         
         app.UseEndpoints(endpoints =>
         {
