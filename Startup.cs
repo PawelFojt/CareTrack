@@ -81,10 +81,9 @@ public class Startup
         app.UseRouting();
 
         app.UseCors(x =>
-            x.SetIsOriginAllowed(_ => true)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowAnyOrigin());
+            x.AllowAnyMethod()
+             .AllowAnyHeader()
+             .AllowAnyOrigin());
         
         app.UseEndpoints(endpoints =>
         {
