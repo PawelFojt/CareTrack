@@ -21,7 +21,16 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         DotNetEnv.Env.Load();
-        services.AddCors();
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+        });
         services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
             options.UseNpgsql(ConnectionHelper.GetConnectionString(Configuration)));
         
@@ -58,6 +67,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment host)
     {
+        app.UseCors("AllowAllOrigins");
         if (host.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -74,11 +84,6 @@ public class Startup
         app.UseDefaultFiles();
         app.UseStaticFiles();
         app.UseRouting();
-
-        app.UseCors(x =>x
-            .WithOrigins("http://localhost:4200")
-            .AllowAnyMethod()
-            .AllowAnyHeader());
         
         app.UseEndpoints(endpoints =>
         {
