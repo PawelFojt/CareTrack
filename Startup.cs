@@ -92,3 +92,4 @@ public class Startup
         });
     }
 }
+//dodać eventy ma być nazwa, id usera, godzina i data

@@ -6,7 +6,7 @@ namespace CareTrack.Server.Modules.Application.Patient.Command;
 
 public class UpdatePatientCommand : IRequest<Result<IPatient>>
 {
-    public PatientResult PatientResult { get; set; }
+    public PatientResult PatientResult { get; init; }
 }
 
 public class UpdatePatientCommandHandler
