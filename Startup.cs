@@ -20,13 +20,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddCors(cors => cors.AddDefaultPolicy(policy =>
-        {
-            policy.AllowAnyHeader();
-            policy.AllowAnyMethod();
-            policy.AllowAnyOrigin();
-        }));
         DotNetEnv.Env.Load();
+        services.AddCors();
         services.AddEntityFrameworkNpgsql().AddDbContext<CareTrackDbContext>(options =>
             options.UseNpgsql(ConnectionHelper.GetConnectionString(Configuration)));
         
