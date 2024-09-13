@@ -11,5 +11,6 @@ public class Patient : IPatient
     public string PhoneNumber { get; set; } = string.Empty;
     public DateTime Admission { get; set; }
     public DateTime Discharge { get; set; }
+    public virtual ICollection<Event>? Events { get; set; }
     public virtual ICollection<PatientPrescription>? PatientPrescriptions { get; set; }
 }

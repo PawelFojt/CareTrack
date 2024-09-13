@@ -13,11 +13,16 @@ public class PatientRepository : IPatientRepository
 {
     private readonly CareTrackDbContext context;
     private readonly IPrescriptionRepository prescriptionRepository;
+    private readonly IEventRepository eventRepository;
 
-    public PatientRepository(CareTrackDbContext context, IPrescriptionRepository prescriptionRepository)
+    public PatientRepository(
+        CareTrackDbContext context, 
+        IPrescriptionRepository prescriptionRepository,
+        IEventRepository eventRepository)
     {
         this.context = context;
         this.prescriptionRepository = prescriptionRepository;
+        this.eventRepository = eventRepository;
     }
     public async Task<Result<IPatientWithPrescriptions>> AddPrescriptionToPatient(int patientId, int prescriptionId)
     {
@@ -74,8 +79,10 @@ public class PatientRepository : IPatientRepository
             .Select(pp => pp.PrescriptionId)
             .ToListAsync();
 
-        var prescriptionsWithMedicines = await prescriptionRepository.ListByIds(patientPrescriptionsId);
+        var prescriptionsWithMedicinesResult = await prescriptionRepository.ListByIds(patientPrescriptionsId);
         
+        var eventsResult = await eventRepository.ListByPatientId(id);
+       
         var patientWithPrescriptions = new PatientWithPrescriptions()
         {
             Id = patient.Id,
@@ -86,7 +93,8 @@ public class PatientRepository : IPatientRepository
             PhoneNumber = patient.PhoneNumber,
             Admission = patient.Admission,
             Discharge = patient.Discharge,
-            PrescriptionsWithMedicines = prescriptionsWithMedicines.Value
+            PrescriptionsWithMedicines = prescriptionsWithMedicinesResult.Value,
+            Events = eventsResult.Value
         };
         
         return new Result<IPatientWithPrescriptions>(patientWithPrescriptions);

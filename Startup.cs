@@ -38,6 +38,7 @@ public class Startup
         services.AddScoped<IMedicineRepository, MedicineRepository>();
         services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
         services.AddScoped<IPatientRepository, PatientRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
         
         services.AddControllers()
             .AddJsonOptions(options =>

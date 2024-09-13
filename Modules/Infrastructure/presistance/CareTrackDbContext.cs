@@ -8,6 +8,7 @@ public class CareTrackDbContext : DbContext
     {
         
     }
+    public DbSet<Event> Events { get; set; }
     public DbSet<Medicine> Medicines { get; set; }
     public DbSet<PrescriptionMedicine> PrescriptionMedicines { get; set; }
     public DbSet<Prescription> Prescriptions { get; set; } 
@@ -19,6 +20,14 @@ public class CareTrackDbContext : DbContext
         modelBuilder.Entity<Medicine>(entity =>
         {
             entity.HasKey(e => e.Id);
+        });
+        
+        modelBuilder.Entity<Event>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasOne(x => x.Patient)
+                .WithMany(x => x.Events)
+                .HasForeignKey(x => x.PatientId);
         });
 
         modelBuilder.Entity<PrescriptionMedicine>(entity =>
