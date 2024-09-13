@@ -84,6 +84,7 @@ public class Startup
             x.SetIsOriginAllowed(_ => true)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
+                .AllowAnyOrigin()
                 .AllowCredentials());
         
         app.UseEndpoints(endpoints =>
