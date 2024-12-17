@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CareTrack.Server.Helpers;
 using CareTrack.Server.Modules.Domain.Repositories;
+using CareTrack.Server.Modules.Infrastructure.Hubs;
 using CareTrack.Server.Modules.Infrastructure.presistance;
 using CareTrack.Server.Modules.Infrastructure.Repositories;
 using DateOnlyTimeOnly.AspNet.Converters;
@@ -46,7 +47,6 @@ public class Startup
                 options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
                 options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
             });
-        services.AddSignalRCore();
         services.AddSignalR();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
@@ -90,6 +90,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapHub<ChatHub>("/chathub");
         });
     }
 }
