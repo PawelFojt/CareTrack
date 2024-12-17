@@ -9,14 +9,9 @@ public class DeletePatientCommand : IRequest<Result<IPatient>>
     public  int Id { get; init; }
 }
 
-public class DeletePatientCommandHandler : 
+public class DeletePatientCommandHandler(IPatientRepository patientRepository) :
     IRequestHandler<DeletePatientCommand, Result<IPatient>>
 {
-    private readonly IPatientRepository patientRepository;
-    public DeletePatientCommandHandler(IPatientRepository patientRepository)
-    {
-        this.patientRepository = patientRepository;
-    }
     public async Task<Result<IPatient>> Handle(DeletePatientCommand request, CancellationToken cancellationToken)
     {
         var patient = await patientRepository.Delete(request.Id);

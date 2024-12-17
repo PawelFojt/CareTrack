@@ -9,18 +9,13 @@ public class AddEventCommand : IRequest<Result<IEvent>>
 {
     public string? Name { get; set; }
     public string? Description { get; set; }
-    public DateTime? Date { get; set; }
+    public DateTime Date { get; set; }
     public int PatientId { get; set; }
 }
 
-public class AddEventCommandHandler
+public class AddEventCommandHandler(IEventRepository medicineRepository)
     : IRequestHandler<AddEventCommand, Result<IEvent>>
 {
-    private readonly IEventRepository medicineRepository;
-    public AddEventCommandHandler(IEventRepository medicineRepository)
-    {
-        this.medicineRepository = medicineRepository;
-    }
     public async Task<Result<IEvent>> Handle(AddEventCommand request, CancellationToken cancellationToken)
     {
         var e = new Event

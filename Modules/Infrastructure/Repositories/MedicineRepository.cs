@@ -7,15 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CareTrack.Server.Modules.Infrastructure.Repositories;
 
-public class MedicineRepository : IMedicineRepository
+public class MedicineRepository(CareTrackDbContext context) : IMedicineRepository
 {
-    private readonly CareTrackDbContext context;
-
-    public MedicineRepository(CareTrackDbContext context)
-    {
-        this.context = context;
-    }
-
     public async Task<Result<IEnumerable<IMedicine>>> List()
     {
         var result =
@@ -24,7 +17,7 @@ public class MedicineRepository : IMedicineRepository
                 .Select(medicine => new MedicineResult()
                 {
                     Id = medicine.Id,
-                    Name = medicine.Name,
+                    Name = medicine.Name ?? "Unknown",
                     Quantity = medicine.Quantity,
                     ExpirationDate = medicine.ExpirationDate
                 })

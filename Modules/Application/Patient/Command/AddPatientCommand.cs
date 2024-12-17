@@ -6,20 +6,15 @@ namespace CareTrack.Server.Modules.Application.Patient.Command;
 
 public class AddPatientCommand : IRequest<Result<IPatient>>
 {
-    public PatientResult PatientResult { get; init; }
+    public required PatientResult Patient { get; init; }
 }
 
-public class AddPatientCommandHandler
+public class AddPatientCommandHandler(IPatientRepository patientRepository)
     : IRequestHandler<AddPatientCommand, Result<IPatient>>
 {
-    private readonly IPatientRepository patientRepository;
-    public AddPatientCommandHandler(IPatientRepository patientRepository)
-    {
-        this.patientRepository = patientRepository;
-    }
     public async Task<Result<IPatient>> Handle(AddPatientCommand request, CancellationToken cancellationToken)
     {
-        var patient = await patientRepository.Add(request.PatientResult);
+        var patient = await patientRepository.Add(request.Patient);
         return patient;
     }
 }

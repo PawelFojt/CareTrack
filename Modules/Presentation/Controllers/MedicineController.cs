@@ -10,23 +10,23 @@ namespace CareTrack.Server.Modules.Presentation.Controllers;
 [Route("medicine")]
 public class MedicineController : CommonController
 {
-    private readonly IMediator mediator;
+    private readonly IMediator _mediator;
     public MedicineController(IMediator mediator)
     {
-        this.mediator = mediator;
+        _mediator = mediator;
     }
     [HttpGet]
     public async Task<IActionResult> List()
     {
         var getMedicinesQuery = new GetMedicinesQuery();
-        var result = await mediator.Send(getMedicinesQuery);
+        var result = await _mediator.Send(getMedicinesQuery);
         return ConvertResult(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> Add([FromBody]AddMedicineCommand command)
     {
-        var result = await mediator.Send(command);
+        var result = await _mediator.Send(command);
         return ConvertResult(result);
     }
 
@@ -38,7 +38,7 @@ public class MedicineController : CommonController
         {
             Medicine = medicine
         };
-        var result = await mediator.Send(updateMedicineCommand);
+        var result = await _mediator.Send(updateMedicineCommand);
         return ConvertResult(result);
     }
 
@@ -50,7 +50,7 @@ public class MedicineController : CommonController
         {
             Id = id
         };
-        var result = await mediator.Send(deleteMedicineCommand);
+        var result = await _mediator.Send(deleteMedicineCommand);
         return ConvertResult(result);
     }
 }

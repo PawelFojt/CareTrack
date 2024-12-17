@@ -9,14 +9,9 @@ public class DeleteEventCommand : IRequest<Result<IEvent>>
     public int Id { get; init; }
 }
 
-public class DeleteEventCommandHandler
+public class DeleteEventCommandHandler(IEventRepository eventRepository)
     : IRequestHandler<DeleteEventCommand, Result<IEvent>>
 {
-    private readonly IEventRepository eventRepository;
-    public DeleteEventCommandHandler(IEventRepository eventRepository)
-    {
-        this.eventRepository = eventRepository;
-    }
     public async Task<Result<IEvent>> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
         var e = await eventRepository.Delete(request.Id);

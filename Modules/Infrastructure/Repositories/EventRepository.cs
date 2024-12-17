@@ -4,16 +4,12 @@ using CareTrack.Server.Modules.Domain.Repositories;
 using CareTrack.Server.Modules.Infrastructure.Entities;
 using CareTrack.Server.Modules.Infrastructure.presistance;
 using Microsoft.EntityFrameworkCore;
+using Sprache;
 
 namespace CareTrack.Server.Modules.Infrastructure.Repositories;
 
-public class EventRepository : IEventRepository
+public class EventRepository(CareTrackDbContext context) : IEventRepository
 {
-    private readonly CareTrackDbContext context;
-    public EventRepository(CareTrackDbContext context)
-    {
-        this.context = context;
-    }
     public async Task<Result<IEnumerable<IEvent>>> List()
     {
         var events = await context.Events.ToListAsync();
@@ -40,18 +36,25 @@ public class EventRepository : IEventRepository
         e.Patient = await context.Patients.FindAsync(e.PatientId);
         return new Result<IEvent>(e);
     }
-    public async Task<Result<IEvent>> Add(IEvent e)
+    public async Task<Result<IEvent>> Add(IEvent ev)
     {
-        var eventToAdd = new Event
+        try
         {
-            Name = e.Name,
-            Description = e.Description,
-            Date = e.Date,
-            PatientId = e.PatientId
-        };
-        context.Events.Add(eventToAdd);
-        await context.SaveChangesAsync();
-        return new Result<IEvent>(e);
+            var eventToAdd = new Event
+            {
+                Name = ev.Name,
+                Description = ev.Description,
+                Date = ev.Date.ToUniversalTime(),
+                PatientId = ev.PatientId
+            };
+            context.Events.Add(eventToAdd);
+            await context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            return Result<IEvent>.Error("Błąd podczas dodawania zdarzenia: " + e.Message, HttpStatusCode.BadRequest);
+        }
+        return new Result<IEvent>(ev);
     }
     public async Task<Result<IEvent>> Update(IEvent e)
     {

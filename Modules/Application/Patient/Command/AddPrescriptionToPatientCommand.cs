@@ -10,14 +10,9 @@ public class AddPrescriptionToPatientCommand : IRequest<Result<IPatientWithPresc
     public int PatientId { get; init; }
 }
 
-public class AddPrescriptionToPatientCommandHandler
+public class AddPrescriptionToPatientCommandHandler(IPatientRepository patientRepository)
     : IRequestHandler<AddPrescriptionToPatientCommand, Result<IPatientWithPrescriptions>>
 {
-    private readonly IPatientRepository patientRepository;
-    public AddPrescriptionToPatientCommandHandler(IPatientRepository patientRepository)
-    {
-        this.patientRepository = patientRepository;
-    }
     public async Task<Result<IPatientWithPrescriptions>> Handle(AddPrescriptionToPatientCommand request, CancellationToken cancellationToken)
     {
         var patient = await patientRepository.AddPrescriptionToPatient(request.PatientId, request.PrescriptionId);

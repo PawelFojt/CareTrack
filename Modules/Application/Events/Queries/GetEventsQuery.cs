@@ -9,14 +9,9 @@ public class GetEventsQuery : IRequest<Result<IEnumerable<IEvent>>>
 {
 }
 
-public class GetEventsQueryHandler
+public class GetEventsQueryHandler(IEventRepository eventRepository)
     : IRequestHandler<GetEventsQuery, Result<IEnumerable<IEvent>>>
 {
-    private readonly IEventRepository eventRepository;
-    public GetEventsQueryHandler(IEventRepository eventRepository)
-    {
-        this.eventRepository = eventRepository;
-    }
     public async Task<Result<IEnumerable<IEvent>>> Handle(GetEventsQuery request, CancellationToken cancellationToken)
     {
         var events = await eventRepository.List();

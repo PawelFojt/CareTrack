@@ -6,20 +6,15 @@ namespace CareTrack.Server.Modules.Application.Prescription.Command;
 
 public class UpdatePrescriptionCommand : IRequest<Result<IPrescription>>
 {
-    public PrescriptionResult PrescriptionResult { get; set; }
+    public required PrescriptionResult Prescription { get; set; }
 }
 
-public class UpdatePrescriptionCommandHandler
+public class UpdatePrescriptionCommandHandler(IPrescriptionRepository prescriptionRepository)
     : IRequestHandler<UpdatePrescriptionCommand, Result<IPrescription>>
 {
-    private readonly IPrescriptionRepository prescriptionRepository;
-    public UpdatePrescriptionCommandHandler(IPrescriptionRepository prescriptionRepository)
-    {
-        this.prescriptionRepository = prescriptionRepository;
-    }
     public async Task<Result<IPrescription>> Handle(UpdatePrescriptionCommand request, CancellationToken cancellationToken)
     {
-        var prescription = await prescriptionRepository.Update(request.PrescriptionResult);
+        var prescription = await prescriptionRepository.Update(request.Prescription);
         return prescription;
     }
 }

@@ -10,10 +10,10 @@ namespace CareTrack.Server.Modules.Presentation.Controllers;
 [Route("event")]
 public class EventController : CommonController
 {
-    private readonly IMediator mediator;
+    private readonly IMediator _mediator;
     public EventController(IMediator mediator)
     {
-        this.mediator = mediator;
+        _mediator = mediator;
     }
     
     [HttpGet("{id:int}")]
@@ -24,28 +24,28 @@ public class EventController : CommonController
         {
             Id = id
         };
-        var result = await mediator.Send(getEventByIdQuery);
+        var result = await _mediator.Send(getEventByIdQuery);
         return ConvertResult(result);
     }
     [HttpGet]
     public async Task<IActionResult> List()
     {
         var getEventsQuery = new GetEventsQuery();
-        var result = await mediator.Send(getEventsQuery);
+        var result = await _mediator.Send(getEventsQuery);
         return ConvertResult(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> Add([FromBody]AddEventCommand command)
     {
-        var result = await mediator.Send(command);
+        var result = await _mediator.Send(command);
         return ConvertResult(result);
     }
 
     [HttpPut]
     public async Task<IActionResult> Update([FromBody]UpdateEventCommand command)
     {
-        var result = await mediator.Send(command);
+        var result = await _mediator.Send(command);
         return ConvertResult(result);
     }
 
@@ -57,7 +57,7 @@ public class EventController : CommonController
         {
             Id = id
         };
-        var result = await mediator.Send(deleteEventCommand);
+        var result = await _mediator.Send(deleteEventCommand);
         return ConvertResult(result);
     }
 }

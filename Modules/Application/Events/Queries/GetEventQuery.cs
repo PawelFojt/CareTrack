@@ -10,14 +10,8 @@ public class GetEventQuery : IRequest<Result<IEvent>>
     public int Id { get; init; }
 }
 
-public class GetEventQueryHandler
-    : IRequestHandler<GetEventQuery, Result<IEvent>>
+public class GetEventQueryHandler(IEventRepository eventRepository) : IRequestHandler<GetEventQuery, Result<IEvent>>
 {
-    private readonly IEventRepository eventRepository;
-    public GetEventQueryHandler(IEventRepository eventRepository)
-    {
-        this.eventRepository = eventRepository;
-    }
     public async Task<Result<IEvent>> Handle(GetEventQuery request, CancellationToken cancellationToken)
     {
         var e = await eventRepository.Get(request.Id);

@@ -19,7 +19,7 @@ public class PrescriptionResult : IPrescription
 {
     public int Id { get; set; }
     public int Quantity { get; set; }
-    public List<TimeOnly> DosingTime { get; set; } = new();
+    public List<TimeOnly> DosingTime { get; set; } = [];
 }
 
 public class PrescriptionResultWithMedicines : PrescriptionResult, IPrescriptionWithMedicines

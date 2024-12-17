@@ -9,14 +9,9 @@ public class GetPatientWithPrescriptionsQuery : IRequest<Result<IPatientWithPres
     public int Id { get; set; }
 }
 
-public class GetPatientWithPrescriptionsQueryHandler
+public class GetPatientWithPrescriptionsQueryHandler(IPatientRepository patientRepository)
     : IRequestHandler<GetPatientWithPrescriptionsQuery, Result<IPatientWithPrescriptions>>
 {
-    private readonly IPatientRepository patientRepository;
-    public GetPatientWithPrescriptionsQueryHandler(IPatientRepository patientRepository)
-    {
-        this.patientRepository = patientRepository;
-    }
     public async Task<Result<IPatientWithPrescriptions>> Handle(
         GetPatientWithPrescriptionsQuery request,
         CancellationToken cancellationToken)

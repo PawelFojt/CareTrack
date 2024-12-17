@@ -8,15 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace CareTrack.Server.Modules.Infrastructure.Repositories;
 
 
-public class PrescriptionRepository : IPrescriptionRepository
+public class PrescriptionRepository(CareTrackDbContext context) : IPrescriptionRepository
 {
-    private readonly CareTrackDbContext context;
-
-    public PrescriptionRepository(CareTrackDbContext context)
-    {
-        this.context = context;
-    }
-
     public async Task<Result<IPrescription>> AddMedicineToPrescription(int prescriptionId, int medicineId)
     {
         var prescription = await context.Prescriptions

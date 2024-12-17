@@ -21,8 +21,8 @@ public interface IPatientWithPrescriptions
     string PhoneNumber { get; set; }
     DateTime Admission { get; set; }
     DateTime Discharge { get; set; }
-    IEnumerable<IPrescriptionWithMedicines>? PrescriptionsWithMedicines { get; set; }
-    IEnumerable<IEvent>? Events { get; set; }
+    IEnumerable<IPrescriptionWithMedicines> PrescriptionsWithMedicines { get; set; }
+    IEnumerable<IEvent> Events { get; set; }
 }
 
 public class PatientWithPrescriptions : IPatientWithPrescriptions
@@ -35,8 +35,8 @@ public class PatientWithPrescriptions : IPatientWithPrescriptions
     public string PhoneNumber { get; set; } = string.Empty;
     public DateTime Admission { get; set; }
     public DateTime Discharge { get; set; }
-    public IEnumerable<IPrescriptionWithMedicines>? PrescriptionsWithMedicines { get; set; }
-    public IEnumerable<IEvent>? Events { get; set; }
+    public IEnumerable<IPrescriptionWithMedicines> PrescriptionsWithMedicines { get; set; } = [];
+    public IEnumerable<IEvent> Events { get; set; } = [];
 }
 
 public class PatientResult : IPatient

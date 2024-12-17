@@ -9,14 +9,9 @@ public class DeletePrescriptionCommand : IRequest<Result<IPrescription>>
     public  int Id { get; init; }
 }
 
-public class DeletePrescriptionCommandHandler : 
+public class DeletePrescriptionCommandHandler(IPrescriptionRepository prescriptionRepository) :
     IRequestHandler<DeletePrescriptionCommand, Result<IPrescription>>
 {
-    private readonly IPrescriptionRepository prescriptionRepository;
-    public DeletePrescriptionCommandHandler(IPrescriptionRepository prescriptionRepository)
-    {
-        this.prescriptionRepository = prescriptionRepository;
-    }
     public async Task<Result<IPrescription>> Handle(DeletePrescriptionCommand request, CancellationToken cancellationToken)
     {
         var prescription = await prescriptionRepository.Delete(request.Id);

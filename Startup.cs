@@ -3,6 +3,7 @@ using CareTrack.Server.Helpers;
 using CareTrack.Server.Modules.Domain.Repositories;
 using CareTrack.Server.Modules.Infrastructure.presistance;
 using CareTrack.Server.Modules.Infrastructure.Repositories;
+using DateOnlyTimeOnly.AspNet.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -19,6 +20,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        DotNetEnv.Env.Load();
         services.AddCors(options =>
         {
             options.AddPolicy("AllowAllOrigins",
@@ -38,6 +40,12 @@ public class Startup
         services.AddScoped<IPatientRepository, PatientRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
         
+        services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+                options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+            });
         services.AddSignalRCore();
         services.AddSignalR();
         services.AddEndpointsApiExplorer();
@@ -73,6 +81,7 @@ public class Startup
         }
         
         app.UseSwagger();
+        app.UseSwaggerUI();
         
         app.UseDefaultFiles();
         app.UseStaticFiles();

@@ -9,21 +9,12 @@ using Patient = CareTrack.Server.Modules.Infrastructure.Entities.Patient;
 namespace CareTrack.Server.Modules.Infrastructure.Repositories;
 
 
-public class PatientRepository : IPatientRepository
+public class PatientRepository(
+    CareTrackDbContext context,
+    IPrescriptionRepository prescriptionRepository,
+    IEventRepository eventRepository)
+    : IPatientRepository
 {
-    private readonly CareTrackDbContext context;
-    private readonly IPrescriptionRepository prescriptionRepository;
-    private readonly IEventRepository eventRepository;
-
-    public PatientRepository(
-        CareTrackDbContext context, 
-        IPrescriptionRepository prescriptionRepository,
-        IEventRepository eventRepository)
-    {
-        this.context = context;
-        this.prescriptionRepository = prescriptionRepository;
-        this.eventRepository = eventRepository;
-    }
     public async Task<Result<IPatientWithPrescriptions>> AddPrescriptionToPatient(int patientId, int prescriptionId)
     {
         var patient = await context.Patients
@@ -93,8 +84,8 @@ public class PatientRepository : IPatientRepository
             PhoneNumber = patient.PhoneNumber,
             Admission = patient.Admission,
             Discharge = patient.Discharge,
-            PrescriptionsWithMedicines = prescriptionsWithMedicinesResult.Value,
-            Events = eventsResult.Value
+            PrescriptionsWithMedicines = prescriptionsWithMedicinesResult.Value ?? [],
+            Events = eventsResult.Value ?? []
         };
         
         return new Result<IPatientWithPrescriptions>(patientWithPrescriptions);

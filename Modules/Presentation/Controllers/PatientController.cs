@@ -9,11 +9,11 @@ namespace CareTrack.Server.Modules.Presentation.Controllers;
 [Route("patient")]
 public class PatientController : CommonController
 {
-    private readonly IMediator mediator;
+    private readonly IMediator _mediator;
 
     public PatientController(IMediator mediator)
     {
-        this.mediator = mediator;
+        _mediator = mediator;
     }
     
     [HttpPost("{patientId:int}/add-prescription/{prescriptionId:int}")]
@@ -26,21 +26,21 @@ public class PatientController : CommonController
             PatientId = patientId
             
         };
-        var result = await mediator.Send(command);
+        var result = await _mediator.Send(command);
         return ConvertResult(result);
     }
     
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] AddPatientCommand command)
     {
-        var result = await mediator.Send(command);
+        var result = await _mediator.Send(command);
         return ConvertResult(result);
     }
     
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var result = await mediator.Send(new GetPatientsQuery());
+        var result = await _mediator.Send(new GetPatientsQuery());
         return ConvertResult(result);
     }
     
@@ -48,14 +48,14 @@ public class PatientController : CommonController
     public async Task<IActionResult> Get(int id)
     {
         if (id == 0) return WrongInputArgument();
-        var result = await mediator.Send(new GetPatientWithPrescriptionsQuery { Id = id });
+        var result = await _mediator.Send(new GetPatientWithPrescriptionsQuery { Id = id });
         return ConvertResult(result);
     }
     
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdatePatientCommand command)
     {
-        var result = await mediator.Send(command);
+        var result = await _mediator.Send(command);
         return ConvertResult(result);
     }
 
@@ -63,7 +63,7 @@ public class PatientController : CommonController
     public async Task<IActionResult> Delete(int id)
     {
         if (id == 0) return WrongInputArgument();
-        var result = await mediator.Send(new DeletePatientCommand { Id = id });
+        var result = await _mediator.Send(new DeletePatientCommand { Id = id });
         return ConvertResult(result);
     }
 }

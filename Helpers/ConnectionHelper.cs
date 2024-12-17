@@ -8,7 +8,8 @@ public static class ConnectionHelper
     {
         var connectionString = configuration.GetConnectionString("CareTrackDb");
         var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-       return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
+       return (string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl)) ?? 
+              throw new InvalidOperationException("Cannot get connection string from database.");
     }
     
     private static string BuildConnectionString(string databaseUrl)
@@ -22,8 +23,7 @@ public static class ConnectionHelper
             Username = userInfo[0],
             Password = userInfo[1],
             Database = databaseUri.LocalPath.TrimStart('/'),
-            SslMode = SslMode.Require,
-            TrustServerCertificate = true
+            SslMode = SslMode.Require
         };
         return builder.ToString();
     }

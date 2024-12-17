@@ -9,14 +9,9 @@ public class GetMedicinesQuery : IRequest<Result<IEnumerable<IMedicine>>>
 {
 }
 
-public class GetMedicinesQueryHandler
+public class GetMedicinesQueryHandler(IMedicineRepository medicineRepository)
     : IRequestHandler<GetMedicinesQuery, Result<IEnumerable<IMedicine>>>
 {
-    private readonly IMedicineRepository medicineRepository;
-    public GetMedicinesQueryHandler(IMedicineRepository medicineRepository)
-    {
-        this.medicineRepository = medicineRepository;
-    }
     public async Task<Result<IEnumerable<IMedicine>>> Handle(GetMedicinesQuery request, CancellationToken cancellationToken)
     {
         var medicines = await medicineRepository.List();

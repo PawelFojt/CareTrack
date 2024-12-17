@@ -9,16 +9,9 @@ public class GetPatientsQuery : IRequest<Result<IEnumerable<IPatient>>>
 {
 }
 
-public class GetPatientsQueryHandler :
+public class GetPatientsQueryHandler(IPatientRepository patientRepository) :
     IRequestHandler<GetPatientsQuery, Result<IEnumerable<IPatient>>>
 {
-    private readonly IPatientRepository patientRepository;
-
-    public GetPatientsQueryHandler(IPatientRepository patientRepository)
-    {
-        this.patientRepository = patientRepository;
-    }
-
     public async Task<Result<IEnumerable<IPatient>>> Handle(
         GetPatientsQuery request,
         CancellationToken cancellationToken)

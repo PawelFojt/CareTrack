@@ -8,7 +8,7 @@ public class Event : IEvent
     public int Id { get; set; }
     public string? Name { get; set; } 
     public string? Description { get; set; }
-    public DateTime? Date { get; set; }
+    public DateTime Date { get; set; } = DateTime.Now;
     public int PatientId { get; set; }
     public virtual Patient? Patient { get; set; }
 }
