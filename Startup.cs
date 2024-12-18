@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using CareTrack.Server.Helpers;
 using CareTrack.Server.Modules.Domain.Repositories;
 using CareTrack.Server.Modules.Infrastructure.Hubs;
@@ -8,6 +9,8 @@ using DateOnlyTimeOnly.AspNet.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CareTrack.Server;
 
@@ -41,6 +44,29 @@ public class Startup
         services.AddScoped<IPatientRepository, PatientRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
         
+        var jwtSettings = Configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["SecretKey"];
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(o =>
+        {
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
+                IssuerSigningKey = key
+            };
+        });
+        
+        services.AddAuthorization();
         services.AddControllers()
             .AddJsonOptions(options =>
             {
