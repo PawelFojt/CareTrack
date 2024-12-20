@@ -14,7 +14,7 @@ public class CareTrackDbContext : DbContext
     public DbSet<Prescription> Prescriptions { get; set; } 
     public DbSet<PatientPrescription> PatientPrescriptions { get; set; }
     public DbSet<Patient> Patients { get; set; }
-    
+    public DbSet<KnowledgeItem> KnowledgeItems { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

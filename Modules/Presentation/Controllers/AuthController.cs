@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace CareTrack.Server.Modules.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("auth")]
 public class AuthController : ControllerBase
 {
     private readonly CareTrackDbContext _context;
